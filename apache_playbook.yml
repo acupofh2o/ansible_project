@@ -1,0 +1,77 @@
+---
+- hosts: clients
+  become: true
+  user: ansible
+
+  tasks:
+    - name: Include local vars
+      include_vars: vars/defaults.yml
+      
+    - name: Install Apache2 with a specific version
+      apt:
+        name: apache2={{ apache_version }}
+        update_cache: yes
+        state: present
+
+    - name: Create document root
+      file:
+        path: "/var/www/{{ http_host }}"
+        state: directory
+        owner: "{{ app_user }}"
+        mode: "0755"
+
+    - name: Disable default Apache2 site
+      shell: /usr/sbin/a2dissite 000-default.conf
+      when: disable_default
+      notify: Restart Apache2
+
+    - name: Enable mod_rewrite module for apache2
+      shell: /usr/sbin/a2enmod rewrite
+      notify: Restart Apache2
+
+    - name: Configure Apache2 VirtualHost
+      template:
+        src: "config_files/apache2.conf.j2"
+        dest: "/etc/apache2/sites-available/{{ http_conf }}"
+    
+    - name: Enable new VirtualHost
+      shell: /usr/sbin/a2ensite {{ http_conf }}
+      notify: Restart Apache2
+
+    - name: Copy default index.html page
+      template:
+        src: "web_templates/index.html.j2"
+        dest: "/var/www/{{ http_host }}/index.html"
+    
+    - name: Copy product's old_links webpages
+      copy:
+        src: "web_templates/old_links"
+        dest: "/var/www/{{ http_host }}"
+
+    - name: Copy product's new_links webpages
+      copy:
+        src: "web_templates/new_links"
+        dest: "/var/www/{{ http_host }}"
+
+    - name: Copy redirect_map.txt
+      copy:
+        src: "redirects"
+        dest: "/var/www/{{ http_host }}"
+
+    - name: Allow external traffic to port {{ http_port }}
+      ufw:
+        rule: allow
+        port: "{{ http_port }}"
+        proto: tcp
+      notify: Restart firewall
+
+  handlers:
+    - name: Restart Apache2
+      service:
+        name: apache2
+        state: restarted 
+
+    - name: Restart firewall
+      service:
+        name: ufw
+        state: restarted
