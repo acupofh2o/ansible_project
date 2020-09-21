@@ -96,7 +96,7 @@ Using the current setup just run the following on control node:
 The project can be further improved depending on additional requirements.
 
 Additional improvements i see fit:
-- Generalizing the installation and configuration of services based on the distribution ansible tasks run against using ansible facts:
+- Generalizing the installation and configuration of services based on the distribution ansible tasks run against using ansible facts.
 - Improving the apache2 configuration.
 	- Hardening
 	- Enabling compression
