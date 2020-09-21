@@ -1,4 +1,5 @@
 <VirtualHost *:{{ http_port }}>
+
    ServerAdmin webmaster@{{ http_host }}
    ServerName {{ http_host }}
    ServerAlias www.{{ http_host }}
@@ -7,10 +8,7 @@
    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
    RewriteEngine On
-   ErrorLog /var/log/apache2/{{ http_host }}.rewrite.log
-
    RewriteMap redirect_map txt:/var/www/{{ http_host }}/redirects/redirect_map.txt
-
    RewriteRule /old_links/(.*).html$ /new_links/prod_id_${redirect_map:$1}.html [L,R]
 
 </VirtualHost>
