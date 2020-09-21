@@ -1,6 +1,6 @@
 ---
 app_user: "ansible"
-apache_version: "2.4.29"
+apache_version: "2.4.29-1ubuntu4.14"
 http_host: "testproject"
 http_conf: "testproject.conf"
 http_port: "80"
