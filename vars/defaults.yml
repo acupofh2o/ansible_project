@@ -1,7 +1,7 @@
 ---
 app_user: "ansible"
 apache_version: "2.4.29"
-http_host: "netcentricproject"
-http_conf: "netcentricproject.conf"
+http_host: "testproject"
+http_conf: "testproject.conf"
 http_port: "80"
 disable_default: true
