@@ -3,8 +3,8 @@ About the project
 # Project Scope
 Create an ansible playbook that does the following:
 - Installs Apache 2.4 ( not the latest, but a specific version - you can choose which)  
-- Create a VHost and activate it  
-- Create a redirect mapping file that contains 5 redirect examples( has to be designed for the above VHost)
+- Creates a VHost and activates it  
+- Creates a redirect mapping file that contains 5 redirect examples(designed for the above VHost)
 
 # Basic setup
 
